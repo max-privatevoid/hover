@@ -11,7 +11,7 @@
 
   outputs = { self, nixpkgs, flake-parts }:
     flake-parts.lib.mkFlake { inherit self; } {
-      systems = [ "x86_64-linux" "aarch64-darwin" ];
+      systems = [ "x86_64-linux" "aarch64-linux" ];
       perSystem = { config, self', inputs', pkgs, system, ... }: {
         packages.default = let
           runtimeInputs = with pkgs; lib.makeBinPath [
