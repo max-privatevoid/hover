@@ -3,6 +3,15 @@ export HOVER_OVERLAY_DIR="$(mktemp -d)"
 mkdir $HOVER_OVERLAY_DIR/{home,.upper,.work}
 export HOVER_HOME=$HOVER_OVERLAY_DIR/home
 
+tmp_cleanup() {
+  # be careful not to rm -rf the original home directory
+  rmdir $HOVER_OVERLAY_DIR/home
+
+  rm -rf $HOVER_OVERLAY_DIR/.upper
+  rm -rf $HOVER_OVERLAY_DIR/.work
+  rmdir $HOVER_OVERLAY_DIR
+}
+
 hover_cleanup() {
   echo hover: cleaning up
   if ! umount $HOVER_HOME; then
@@ -10,13 +19,10 @@ hover_cleanup() {
     exit 1
   fi
 
-  # be careful not to rm -rf the original home directory
-  rmdir $HOVER_OVERLAY_DIR/home
   echo "hover: space consumed by temporary home directory:"
   dua -Ax $HOVER_OVERLAY_DIR/.upper
-  rm -rf $HOVER_OVERLAY_DIR/.upper
-  rm -rf $HOVER_OVERLAY_DIR/.work
-  rmdir $HOVER_OVERLAY_DIR
+
+  tmp_cleanup
 }
 
 hover_execute() {
@@ -48,5 +54,6 @@ case "$cmd" in
   run) hover_execute "$@";;
   *)
     echo "hover: unknown operation: \"$cmd\""
+    tmp_cleanup
     exit 1;;
 esac
