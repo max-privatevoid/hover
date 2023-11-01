@@ -47,6 +47,6 @@ case "$cmd" in
   ""|shell) hover_execute "$SHELL" "$@";;
   run) hover_execute "$@";;
   *)
-    echo "hover: unknown operation: \"$1\""
+    echo "hover: unknown operation: \"$cmd\""
     exit 1;;
 esac
