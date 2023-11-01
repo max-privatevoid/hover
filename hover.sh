@@ -3,6 +3,28 @@ export HOVER_OVERLAY_DIR="$(mktemp -d)"
 mkdir $HOVER_OVERLAY_DIR/{home,.upper,.work}
 export HOVER_HOME=$HOVER_OVERLAY_DIR/home
 
+show_help() {
+  local b=$(tput bold)
+  local u=$(tput smul)
+  local n=$(tput sgr0)
+  echo "Hover - Temporary home directories,
+Usage: hover [shell | run ${u}arguments${n} | nix ${u}arguments${n}]
+
+Options:
+       •  shell
+          Runs your ${b}\$SHELL${n} in a Hover environment.
+          Can also be used by running hover with no arguments.
+
+       •  run
+          Runs the specified program. Keep in mind that environment variables on the command line
+          are parsed by the outer shell, so '${b}hover run echo \$HOME${n}' will echo your regular home directory.
+
+       •  nix
+          A convenient shortcut for '${u}hover run nix${n}', so you can do:
+          '${b}hover nix shell github:some-person/tool-you-want-to-test${n}'
+"
+}
+
 tmp_cleanup() {
   # be careful not to rm -rf the original home directory
   rmdir $HOVER_OVERLAY_DIR/home
@@ -52,6 +74,7 @@ case "$cmd" in
   nix) hover_execute nix "$@";;
   ""|shell) hover_execute "$SHELL" "$@";;
   run) hover_execute "$@";;
+  -h|--help) show_help & tmp_cleanup;;
   *)
     echo "hover: unknown operation: \"$cmd\""
     tmp_cleanup

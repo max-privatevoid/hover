@@ -18,6 +18,7 @@
             coreutils
             dua
             fuse-overlayfs
+            ncurses
           ];
         in pkgs.writeShellScriptBin "hover" ''
           export HOVER_ORIGINAL_PATH="$PATH"
