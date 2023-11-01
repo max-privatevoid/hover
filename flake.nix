@@ -25,5 +25,12 @@
           ${builtins.readFile ./hover.sh}
         '';
       };
+
+      flake = {
+        nixosModules.default = { pkgs, ... }: {
+          programs.fuse.userAllowOther = true;
+          environment.systemPackages = [ self.packages.${pkgs.system}.default ];
+        };
+      };
     };
 }
