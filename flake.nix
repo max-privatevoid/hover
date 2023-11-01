@@ -31,6 +31,17 @@
           programs.fuse.userAllowOther = true;
           environment.systemPackages = [ self.packages.${pkgs.system}.default ];
         };
+
+        homeManagerModules.starship = { ... }: {
+          programs.starship.settings = {
+            custom.hover = {
+              when = "[ ! -z \${HOVER_HOME+x} ]";
+              symbol = "🏂";
+              style = "bold blue";
+              format = "via [$symbol hover ]($style)";
+            };
+          };
+        };
       };
     };
 }
