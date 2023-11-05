@@ -24,6 +24,10 @@ Try it in a temporary shell
 $ nix shell github:max-privatevoid/hover
 ```
 
+To be able to use this utiliy as non-root, `user_allow_other` must be added to `/etc/fuse.conf`.
+
+On **NixOS** this can be done using the option `programs.fuse.userAllowOther = true`.
+
 ## Usage
 
 Hover has a couple of subcommands, listed here.
@@ -55,3 +59,9 @@ A convenient shortcut for `hover run nix`, so you can do:
 ```console
 $ hover nix shell github:some-person/tool-you-want-to-test
 ```
+
+## Modules
+
+Hover also provides two modules:
+- `nixosModules.default` which adds hover to the system packages and enables `programs.fuse.userAllowOthers`.
+- `homeManagerModules.starship` which adds integration with the [starship](https://starship.rs/) prompt.
